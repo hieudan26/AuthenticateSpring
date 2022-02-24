@@ -18,28 +18,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(value = false)
 public class UserReponsitoryTest {
-    @Autowired
-    private TestEntityManager managerEntity;
-    @Autowired
-    private UserRepository repository;
-    @Autowired
-    private RoleRepositoty roleRepositoty;
-    @Test
-    public void testUserrepo(){
-        UserEntity user =repository.findByEmail("hieudankaz@gmail.com").get();
-        AppUserDetail x = AppUserDetail.build(user);
-        for(RoleEntity role :user.getRoles())
-        {
-            System.out.println(role.getRoleName());
-        }
 
-    }
-
-    @Test
-    public void findByEmail(){
-
-        UserEntity savedUser = repository.findByEmail("hieudankaz").get();
-        System.out.print(savedUser);
-    }
 
 }
