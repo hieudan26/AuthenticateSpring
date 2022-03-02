@@ -11,8 +11,8 @@ import static com.socialmedia.loginandregistration.common.UserPermission.*;
 
 
 public enum AppUserRole {
-    CUSTOMER(Sets.newHashSet(CUSTOMER_READ, CUSTOMER_WRITE)),
-    ADMIN(Sets.newHashSet(ADMIN_READ, ADMIN_WRITE, CUSTOMER_READ, CUSTOMER_WRITE));
+    USER(Sets.newHashSet(USER_READ, USER_WRITE)),
+    ADMIN(Sets.newHashSet(ADMIN_READ, ADMIN_WRITE, USER_READ, USER_WRITE));
 
     private final Set<UserPermission> permissions;
 

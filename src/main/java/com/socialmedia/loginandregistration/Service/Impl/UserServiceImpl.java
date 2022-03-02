@@ -1,12 +1,14 @@
 package com.socialmedia.loginandregistration.Service.Impl;
 
 import com.socialmedia.loginandregistration.Service.UserService;
-import com.socialmedia.loginandregistration.model.Entity.RoleEntity;
-import com.socialmedia.loginandregistration.model.Entity.UserEntity;
-import com.socialmedia.loginandregistration.repository.RoleRepositoty;
+
+import com.socialmedia.loginandregistration.model.Entity.Role;
+import com.socialmedia.loginandregistration.model.Entity.User;
+import com.socialmedia.loginandregistration.repository.RoleRepository;
 import com.socialmedia.loginandregistration.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,51 +21,46 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
     final UserRepository userRepository;
-    final RoleRepositoty roleRepository;
+    final RoleRepository roleRepository;
     @Override
-    public UserEntity saveUser(UserEntity user) {
+    public User saveUser(User user) {
 
         log.info("Saving user {} to database",user.getEmail());
+        user.setId(new ObjectId());
         return userRepository.save(user);
     }
 
     @Override
-    public RoleEntity saveRole(RoleEntity role) {
-        log.info("Saving Role {} to database",role.getRoleName());
+    public Role saveRole(Role role) {
+        log.info("Saving Role {} to database",role.getName());
         return roleRepository.save(role);
     }
 
     @Override
     public void addRoleToUser(String email, String roleName) {
         log.info("Adding Role {} to user {}", roleName, email);
-        Optional<RoleEntity> role = roleRepository.findByRoleName(roleName);
-        Optional<UserEntity> user = userRepository.findByEmail(email);
+        Optional<Role> role = roleRepository.findByName(roleName);
+        Optional<User> user = userRepository.findByEmail(email);
 
         if(user.get().getRoles() == null){
-            Set<RoleEntity> roleEntitySet = new HashSet<>();
-            roleEntitySet.add(role.get());
-            user.get().setRoles(roleEntitySet);
+            Set<Role> RoleSet = new HashSet<>();
+            RoleSet.add(role.get());
+            user.get().setRoles(RoleSet);
         }
         else{
             user.get().getRoles().add(role.get());
         }
-
-
-        if (user.get().getRoles() == null) {
-            Set<RoleEntity> roleEntitySet = new HashSet<>();
-            roleEntitySet.add(role.get());
-            user.get().setRoles(roleEntitySet);
-        }
+        userRepository.save(user.get());
     }
 
     @Override
-    public UserEntity getUser(String email) {
+    public User getUser(String email) {
         log.info("Fetching user {}",email);
-        return userRepository.findByEmail(email).get();
+        return userRepository.findByUsername(email).get();
     }
 
     @Override
-    public List<UserEntity> getUsers() {
+    public List<User> getUsers() {
         log.info("Fetching all users ");
         return userRepository.findAll();
     }

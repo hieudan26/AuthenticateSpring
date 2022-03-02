@@ -1,6 +1,6 @@
 package com.socialmedia.loginandregistration.security.Service;
 
-import com.socialmedia.loginandregistration.model.Entity.UserEntity;
+import com.socialmedia.loginandregistration.model.Entity.User;
 import com.socialmedia.loginandregistration.repository.UserRepository;
 import com.socialmedia.loginandregistration.security.DTO.AppUserDetail;
 import org.apache.logging.log4j.LogManager;
@@ -20,8 +20,8 @@ public class AppUserDetailService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<UserEntity> userEntity = userRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> userEntity = userRepository.findByUsername(username);
         if(userEntity.isEmpty())
         {
             throw new UsernameNotFoundException("User not found");

@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialmedia.loginandregistration.Service.UserService;
 import com.socialmedia.loginandregistration.mapping.UserMapping;
+import com.socialmedia.loginandregistration.model.Entity.User;
 import com.socialmedia.loginandregistration.model.payload.request.RegisterRequest;
 import com.socialmedia.loginandregistration.security.DTO.AppUserDetail;
 import lombok.RequiredArgsConstructor;
@@ -56,8 +57,10 @@ public class AuthentiactionController {
         try{
 
             UserMapping userMapping = new UserMapping(user);
-            userService.saveUser(userMapping.getUserEntity());
-            userService.addRoleToUser(user.getEmail(),"CUSTOMER");
+            User user1 = userMapping.getUserEntity();
+
+            userService.saveUser(user1);
+            userService.addRoleToUser(user.getEmail(),"USER");
             return ResponseEntity.ok("Account has been created");
 
         }catch(ResponseStatusException ex){

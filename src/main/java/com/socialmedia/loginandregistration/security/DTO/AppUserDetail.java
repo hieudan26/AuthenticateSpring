@@ -1,129 +1,102 @@
 package com.socialmedia.loginandregistration.security.DTO;
+import java.util.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.socialmedia.loginandregistration.common.AppUserRole;
-import com.socialmedia.loginandregistration.model.Entity.RoleEntity;
-import com.socialmedia.loginandregistration.model.Entity.UserEntity;
+import com.socialmedia.loginandregistration.model.Entity.Role;
+import com.socialmedia.loginandregistration.model.Entity.User;
+import org.bson.types.ObjectId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 public class AppUserDetail implements UserDetails {
-    private Integer id;
+    private static final long serialVersionUID = 1L;
+    private ObjectId id;
+    private String username;
     private String email;
-
     @JsonIgnore
     private String password;
-
-    private String firstName;
-    private String lastName;
-
-    private Set<String> roleName;
     private Collection<? extends GrantedAuthority> authorities;
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-
-    public AppUserDetail(Integer id, String email, String password, String firstName, String lastName, Set<String> roleName,
-                         Collection<? extends GrantedAuthority> authorities) {
+    private Collection<String> roles;
+    public AppUserDetail(ObjectId id, String username, String email, String password,
+                         Collection<? extends GrantedAuthority> authorities,Collection<String> roles) {
         this.id = id;
+        this.username = username;
         this.email = email;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.roleName = roleName;
         this.authorities = authorities;
+        this.roles = roles;
     }
-
-    public static AppUserDetail build(UserEntity user) {
+    public static AppUserDetail build(User user) {
         Set<GrantedAuthority> authorities = new HashSet<>();
         Set<String> roleNames = new HashSet<>();
 
-        for(RoleEntity role : user.getRoles()){
-            roleNames.add(role.getRoleName());
+        for(Role role : user.getRoles()){
+            roleNames.add(role.getName());
             for(AppUserRole item : AppUserRole.values()){
-                if(role.getRoleName().equals(item.name())){
+                if(role.getName().equals(item.name())){
                     authorities.addAll(item.getGrantedAuthorities());
                 }
             }
         }
 
+
         return new AppUserDetail(
-                user.getUserId(),
+                user.getId(),
+                user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getFirstName(),
-                user.getLastName(),
-                roleNames,
-                authorities);
+                authorities,
+                roleNames);
     }
-
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+    public ObjectId getId() {
+        return id;
+    }
+    public String getEmail() {
+        return email;
+    }
     @Override
     public String getPassword() {
-        return this.password;
+        return password;
     }
-
     @Override
     public String getUsername() {
-        return this.email;
+        return username;
     }
-
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
-
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
-
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
     @Override
     public boolean isEnabled() {
         return true;
     }
-
-
-    public Integer getId() {
-        return id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        AppUserDetail user = (AppUserDetail) o;
+        return Objects.equals(id, user.id);
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Collection<String> getRoles() {
+        return roles;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public void setRoles(Collection<String> roles) {
+        this.roles = roles;
     }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Set<String> getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(Set<String> roleName) {
-        this.roleName = roleName;
-    }
-
 }

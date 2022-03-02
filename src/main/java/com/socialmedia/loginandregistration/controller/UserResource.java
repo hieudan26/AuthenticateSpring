@@ -2,7 +2,7 @@ package com.socialmedia.loginandregistration.controller;
 
 import com.socialmedia.loginandregistration.Service.UserService;
 import com.socialmedia.loginandregistration.mapping.UserMapping;
-import com.socialmedia.loginandregistration.model.Entity.UserEntity;
+import com.socialmedia.loginandregistration.model.Entity.User;
 import com.socialmedia.loginandregistration.model.payload.request.RegisterRequest;
 import com.socialmedia.loginandregistration.model.payload.request.RoleToUserRequest;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +32,13 @@ public class UserResource {
 
     @GetMapping("/users")
     @ResponseBody
-    public ResponseEntity<List<UserEntity>> getUsers() {
+    public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
     @PostMapping("user/save")
     @ResponseBody
-    public ResponseEntity<UserEntity> saveUser(@RequestBody @Valid RegisterRequest user) {
+    public ResponseEntity<User> saveUser(@RequestBody @Valid RegisterRequest user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(new UserMapping(user).getUserEntity()));
     }

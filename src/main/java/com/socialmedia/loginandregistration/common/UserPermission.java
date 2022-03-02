@@ -1,8 +1,8 @@
 package com.socialmedia.loginandregistration.common;
 
 public enum UserPermission {
-    CUSTOMER_READ("customer:read"),
-    CUSTOMER_WRITE("customer:write"),
+    USER_READ("user:read"),
+    USER_WRITE("user:write"),
     ADMIN_READ("admin:read"),
     ADMIN_WRITE("admin:write");
     private final String permission;

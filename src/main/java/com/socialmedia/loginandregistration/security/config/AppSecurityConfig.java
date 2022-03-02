@@ -21,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.sql.DataSource;
+//import javax.sql.DataSource;
 
 import static com.socialmedia.loginandregistration.common.UserPermission.*;
 
@@ -46,9 +46,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         this.customAuthenticationFilter = customAuthenticationFilter;
     }
 
-    @Autowired
-    private DataSource dataSource;
-
+//    @Autowired
+//    private DataSource dataSource;
+//
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

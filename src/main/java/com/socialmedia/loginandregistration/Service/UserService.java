@@ -1,16 +1,17 @@
 package com.socialmedia.loginandregistration.Service;
 
-import com.socialmedia.loginandregistration.model.Entity.RoleEntity;
-import com.socialmedia.loginandregistration.model.Entity.UserEntity;
+import com.socialmedia.loginandregistration.model.Entity.Role;
+import com.socialmedia.loginandregistration.model.Entity.User;
+
 
 import java.util.List;
 
 
 public interface UserService {
-    UserEntity saveUser(UserEntity user);
-    RoleEntity saveRole(RoleEntity role);
+    User saveUser(User user);
+    Role saveRole(Role role);
     void addRoleToUser(String email, String roleName);
-    UserEntity getUser(String email);
-    List<UserEntity> getUsers();
+    User getUser(String email);
+    List<User> getUsers();
     Boolean existsByEmail(String email);
 }
